@@ -2,6 +2,7 @@ name: Release Windows
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -13,6 +14,14 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npm run release
+      - run: npx electron-builder --win nsis --publish never
+      - name: Upload Windows updater files to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/*.exe
+            dist/*.exe.blockmap
+            dist/latest.yml
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
