@@ -1,5 +1,3 @@
-import * as webllm from 'https://esm.run/@mlc-ai/web-llm';
-
 const KEY = 'nova-desktop-state-v1';
 const MODEL = 'Llama-3.2-3B-Instruct-q4f16_1-MLC';
 const state = JSON.parse(localStorage.getItem(KEY) || '{"chats":[{"id":"welcome","name":"Nova Desktop","messages":[{"role":"assistant","text":"Salut. Je suis Nova. Mon cerveau local peut être installé depuis ce chat."}]}],"active":"welcome","memory":[],"replay":[]}');
@@ -7,6 +5,7 @@ const $ = s => document.querySelector(s);
 const save = () => localStorage.setItem(KEY, JSON.stringify(state));
 let engine = null;
 let loadingBrain = null;
+let webllm = null;
 
 function active() { return state.chats.find(c => c.id === state.active); }
 function addMessage(role, text) { active().messages.push({ role, text }); save(); render(); }
@@ -30,6 +29,7 @@ async function ensureBrain() {
     setComposer(false);
     addMessage('assistant', 'Installation du cerveau local : téléchargement et chargement sur le GPU en cours…');
     log('Installation du cerveau local lancée');
+    webllm ??= await import('https://esm.run/@mlc-ai/web-llm');
     engine = await webllm.CreateMLCEngine(MODEL, {
       initProgressCallback: progress => {
         const message = `Cerveau local — ${progress.text || 'chargement'} (${Math.round((progress.progress || 0) * 100)} %)`;
