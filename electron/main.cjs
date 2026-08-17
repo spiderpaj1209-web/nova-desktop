@@ -8,10 +8,9 @@ function createWindow() {
     minWidth: 900,
     minHeight: 620,
     backgroundColor: '#071014',
-    webPreferences: { contextIsolation: true }
+    webPreferences: { contextIsolation: true, preload: path.join(__dirname, 'preload.cjs') }
   });
   win.loadFile(path.join(__dirname, '../src/index.html'));
 }
-
 app.whenReady().then(createWindow);
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
