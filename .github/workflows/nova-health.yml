@@ -1,0 +1,46 @@
+name: Nova Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'
+  push:
+    branches:
+      - nova/phase-1-dashboard
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nova-health-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  health-check:
+    name: Verify Nova build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Nova
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify Windows build
+        run: npm run build
+
+      - name: Publish result summary
+        if: always()
+        shell: pwsh
+        run: |
+          if ('${{ job.status }}' -eq 'success') {
+            '## Nova health check: ✅ Build valid' | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
+          } else {
+            '## Nova health check: ❌ Build failed — use the logs to repair Nova.' | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
+          }
