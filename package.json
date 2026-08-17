@@ -1,6 +1,6 @@
 {
   "name": "nova-desktop",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "Nova Desktop — assistant local Windows",
   "author": "spiderpaj1209-web",
   "private": true,
@@ -20,7 +20,15 @@
   "build": {
     "appId": "com.nova.desktop",
     "productName": "Nova Desktop",
-    "win": { "target": "nsis" },
-    "publish": [{ "provider": "github", "owner": "spiderpaj1209-web", "repo": "nova-desktop" }]
+    "win": {
+      "target": "nsis"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "spiderpaj1209-web",
+        "repo": "nova-desktop"
+      }
+    ]
   }
 }
