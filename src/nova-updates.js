@@ -1,19 +1,49 @@
-(() => {
-  const header = document.querySelector('main header');
-  if (!header || !window.novaUpdates) return;
-  const box = document.createElement('div');
-  box.className = 'box';
-  box.style.cssText = 'margin:18px 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px';
-  box.innerHTML = '<span class="label" id="novaUpdateText">Vérification des mises à jour…</span><button class="primary hidden" id="novaInstallUpdate">Redémarrer et installer</button>';
-  header.insertAdjacentElement('afterend', box);
-  const text = box.querySelector('#novaUpdateText');
-  const install = box.querySelector('#novaInstallUpdate');
-  install.onclick = () => { install.disabled = true; text.textContent = 'Installation de la mise à jour…'; window.novaUpdates.install(); };
-  window.novaUpdates.onStatus(({ state, detail }) => {
-    if (state === 'checking') text.textContent = 'Vérification des mises à jour…';
-    if (state === 'current') text.textContent = 'Nova est à jour.';
-    if (state === 'downloading') text.textContent = `Téléchargement de la mise à jour${detail ? ` — ${detail}` : '…'}`;
-    if (state === 'ready') { text.textContent = `Mise à jour ${detail} prête.`; install.classList.remove('hidden'); }
-    if (state === 'error') text.textContent = 'Mise à jour indisponible pour le moment.';
+function setText(element, value) {
+  if (element) element.textContent = value;
+}
+
+function setBusy(button, busy) {
+  if (!button) return;
+  button.disabled = busy;
+  button.textContent = busy ? "Vérification…" : "Mettre à jour";
+}
+
+export function initUpdater({ button, status, version }) {
+  const updater = window.nova?.updater;
+  const appVersion = window.nova?.app?.version;
+
+  if (typeof appVersion === "function") {
+    appVersion().then((value) => setText(version, `Version installée : ${value}`)).catch(() => setText(version, "Version installée : inconnue"));
+  } else {
+    setText(version, "Version installée : développement");
+  }
+
+  button?.addEventListener("click", async () => {
+    setBusy(button, true);
+    setText(status, "Vérification des mises à jour…");
+
+    try {
+      if (!updater?.check) {
+        setText(status, "Le système de mise à jour sera activé dans une prochaine version.");
+        return;
+      }
+
+      const result = await updater.check();
+
+      if (!result?.available) {
+        setText(status, "Nova est déjà à jour.");
+        return;
+      }
+
+      setText(status, `Téléchargement de Nova ${result.version}…`);
+      await updater.download();
+      setText(status, "Mise à jour prête. Redémarrage de Nova…");
+      await updater.install();
+    } catch (error) {
+      setText(status, "Impossible de vérifier la mise à jour. Réessaie plus tard.");
+      console.error("Nova update failed", error);
+    } finally {
+      setBusy(button, false);
+    }
   });
-})();
+}
