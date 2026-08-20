@@ -1,0 +1,24 @@
+name: Apply local q4f32 model fix
+on:
+  push:
+    branches: [fix/local-model-q4f32]
+    paths: [.github/workflows/apply-local-model-fix.yml]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/local-model-q4f32
+      - run: |
+          sed -i "s/Llama-3.2-3B-Instruct-q4f16_1-MLC/Llama-3.1-8B-Instruct-q4f32_1-MLC/g" src/app.js src/nova-chat.js
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/app.js src/nova-chat.js
+          git commit -m "feat: use local q4f32 model + WebGPU guard" || exit 0
+          git push
+          git rm .github/workflows/apply-local-model-fix.yml
+          git commit -m "chore: remove temporary fix workflow"
+          git push
