@@ -1,6 +1,9 @@
 {
   "name": "nova-chat-interface",
   "version": "0.1.6",
+  "description": "Nova Desktop Chat Interface",
+  "author": "spiderpaj1209-web",
+  "main": "electron/main.js",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -26,5 +29,22 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.5.3"
+  },
+  "build": {
+    "appId": "com.nova.desktop",
+    "productName": "Nova Desktop",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "electron/**/*",
+      ".next/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "electron/icon.ico"
+    }
   }
 }
