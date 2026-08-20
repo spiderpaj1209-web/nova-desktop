@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "privacy": {
+    "storage": "local-only",
+    "remoteSync": false,
+    "note": "This profile is intended for Nova Desktop's local memory. Do not transmit it externally without explicit user approval."
+  },
+  "profile": {
+    "preferredName": "Darvine",
+    "communication": {
+      "language": "fr",
+      "responseStyle": [
+        "Direct and concise",
+        "Avoid unnecessary filler or repetition",
+        "Explain technical information clearly when it matters",
+        "Show visible progress while a task is running"
+      ]
+    },
+    "workingPreferences": [
+      "Favor one-click automation and the minimum possible setup",
+      "Avoid repeated manual downloads, installations, commands, and configuration",
+      "Keep interfaces simple, polished, and focused rather than spread across many windows",
+      "Prefer a browser-first or directly runnable testing workflow when appropriate",
+      "Make generated code testable and protect changes with backups and verification"
+    ],
+    "novaProject": {
+      "name": "Nova Desktop",
+      "vision": [
+        "A powerful personal local assistant",
+        "Self-hosted and independent from external AI APIs where possible",
+        "Strong, coherent local memory across conversations",
+        "User-controlled import, export, review, editing, and deletion of memories",
+        "Text, voice, image input and output, web research, coding, multimedia control, and useful PC assistance",
+        "Efficient use of available CPU and GPU",
+        "Automatic software updates with minimal user intervention",
+        "A minimalist, premium-looking interface with clear task progress"
+      ],
+      "futureIdeas": [
+        "Embodied AI represented by a blue humanoid robot with arms",
+        "A visible, controllable chat connection between Nova and an external assistant, with an immediate stop control"
+      ]
+    },
+    "interactionModes": {
+      "continuousLearning": {
+        "enabled": true,
+        "policy": "Extract durable preferences, projects, decisions, and user-provided facts from conversations. Do not store credentials, financial information, or other highly sensitive data by default. Make stored memories reviewable and removable."
+      },
+      "voiceConversation": {
+        "enabled": true,
+        "activation": "keyboard-shortcut",
+        "behavior": "Once activated, keep the conversation mode available continuously until the user stops it. Always show a clear active indicator and provide an immediate stop action."
+      }
+    },
+    "namingTaste": [
+      "Easy to pronounce",
+      "Stylish",
+      "Premium or high-end feeling"
+    ]
+  },
+  "memories": [],
+  "conversationSummaries": [],
+  "lastUpdated": "2026-08-20"
+}
