@@ -1,0 +1,25 @@
+name: Publish Nova v0.1.5
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-v0.1.5.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: |
+          npm version 0.1.5 --no-git-tag-version
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add package.json
+          git commit -m "chore: release v0.1.5"
+          git tag v0.1.5
+          git push origin main --tags
+          git rm .github/workflows/publish-v0.1.5.yml
+          git commit -m "chore: remove temporary release workflow"
+          git push origin main
