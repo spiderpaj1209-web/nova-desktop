@@ -1,5 +1,5 @@
 const KEY = 'nova-desktop-state-v1';
-const MODEL = 'Llama-3.2-3B-Instruct-q4f16_1-MLC';
+const MODEL = 'Llama-3.1-8B-Instruct-q4f32_1-MLC';
 const state = JSON.parse(localStorage.getItem(KEY) || '{"chats":[{"id":"welcome","name":"Nova Desktop","messages":[{"role":"assistant","text":"Salut. Je suis Nova. Mon cerveau local peut être installé depuis ce chat."}]}],"active":"welcome","memory":[],"replay":[]}');
 const $ = s => document.querySelector(s);
 const save = () => localStorage.setItem(KEY, JSON.stringify(state));
